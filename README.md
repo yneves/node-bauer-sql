@@ -1,7 +1,9 @@
 node-bauer-sql
 ==============
 
-Just another SQL building tool.
+Just another SQL building tool. 
+
+It was inspired by [Squel.js](http://hiddentao.github.io/squel/index.html), which i used for some time and is a great library.
 
 ## Installation
 
@@ -631,3 +633,6 @@ drop.table("tablename").exists(false);
 // produces DROP TABLE IF NOT EXISTS tablename
 ```
 
+## License
+
+MIT
