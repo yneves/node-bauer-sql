@@ -1,6 +1,6 @@
 {
   "name": "bauer-sql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Just another SQL building tool",
   "keywords": ["sql","query","insert","delete","update","create","alter","drop","table","index","trigger","statement"],
   "license": "MIT",

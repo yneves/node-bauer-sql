@@ -707,10 +707,23 @@ function makeValues(query,args) {
 		if (type == "string") {
 			text += value;
 		} else if (type == "array" || type == "arguments") {
+			var comma = false;
 			for (var f = 0; f < value.length; f++) {
-				if (f > 0) text += ", ";
-				text += "?";
-				args.push(value[f]);
+				var val = value[f];
+				var valtype = lib.factory.type(val);
+				if (valtype == "string") {
+					if (comma) { text += ", "; }
+					else { comma = true; }
+					text += "?";
+					args.push(val);
+				} else if (valtype == "array" || valtype == "arguments") {
+					for (var g = 0; g < val.length; g++) {
+						if (comma) { text += ", "; }
+						else { comma = true; }
+						text += "?";
+						args.push(val[g]);
+					}
+				}
 			}
 		}
 		text += ")";
