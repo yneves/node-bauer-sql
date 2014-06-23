@@ -1,0 +1,27 @@
+{
+  "name": "bauer-sql",
+  "version": "1.0.0",
+  "description": "Just another SQL building tool",
+  "keywords": ["sql","query","insert","delete","update","create","alter","drop","table","index","trigger","statement"],
+  "license": "MIT",
+  "homepage": "https://github.com/yneves/node-bauer-sql",
+  "author": {
+    "name": "Yuri Neves Silveira",
+    "url": "http://yneves.com/",
+    "email": "npm@yneves.com"
+  },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/yneves/node-bauer-sql.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": ">=1.0.0"
+  },
+  "dependencies": {
+    "bauer-factory": ">=1.0.0"
+  },
+  "main": "sql.js"	
+}
