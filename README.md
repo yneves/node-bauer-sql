@@ -19,7 +19,7 @@ var sql = require("bauer-sql");
 
 ## Query
 
-Class `sql.cls.Query` is the base class for others. Extending its prototype will make it available for all other statements.
+The `sql.cls.Query` class is inherited by all other classes. Extending its prototype will make it available for all other kinds of statements.
 
 ```js
 sql.cls.Query.prototype.execute = function() {
@@ -41,7 +41,7 @@ var args = query.args; // Array
 
 ### .toText
 
-Builds the query by calling toQuery and then replaces all `?` tokens with corresponding arguments. 
+Builds the query by calling `.toQuery` and then replaces all `?` tokens with corresponding arguments. 
 
 ```js
 var text = queryObj.toText();
@@ -55,8 +55,9 @@ var text = queryObj.toText(function(val,idx) {
 });
 ```
 
-
 ## Select
+
+Builds a `SELECT` statement.
 
 ### Constructor
 
@@ -76,7 +77,7 @@ select.fields("table.*, other.fieldname AS name")
 select.fields("table.*","other.fieldname AS name")
 // same as
 select.fields("table.*").fields({ "other.fieldname": "name" });
-// produes SELECT table.*, other.fieldname AS name
+// produces SELECT table.*, other.fieldname AS name
 ```
 
 ### .from
@@ -89,15 +90,16 @@ select.from("table, other");
 select.from("table","other");
 // same as
 select.from("table").from("other");
-// produes FROM table, other
+// produces FROM table, other
 ```
 
 It accepts a `sql.cls.Select` instance.
 
 ```js
 var from = sql.select().fields("table.*").from("table").where({ field: "value" });
+
 select.from( from ).where({ other: "value" }); 
-// produes SELECT * FROM (SELECT other.* FROM table WHERE field = ?) WHERE other = ?
+// produces SELECT * FROM (SELECT other.* FROM table WHERE field = ?) WHERE other = ?
 ```
 
 ### .where
@@ -106,24 +108,24 @@ Defines the `WHERE` clause.
 
 ```js
 select.where({ one: 1, two: 2 })
-// produes WHERE (one = ? AND two = ?)
+// produces WHERE (one = ? AND two = ?)
 ```
 
 ```js
 select.where({ one: 1 }).where({ two: 2 })
-// produes WHERE (one = ?) AND (two = ?)
+// produces WHERE (one = ?) AND (two = ?)
 ```
 
 A little more complex filtering.
 
 ```js
 select.where({ one: { gt: 0, elt: 1 }, two: [2,3,4] })
-// produes WHERE (one > ? AND one <= ? AND two IN (?, ?, ?))
+// produces WHERE (one > ? AND one <= ? AND two IN (?, ?, ?))
 ```
 
 ```js
 select.where({ one: { gt: 0, elt: 1 } }).where({ two: [2,3,4] })
-// produes WHERE (one > ? AND one <= ?) AND (two IN (?, ?, ?))
+// produces WHERE (one > ? AND one <= ?) AND (two IN (?, ?, ?))
 ```
 
 All entries are combined with `AND` operator. To use `OR` call it passing a `String`. In this case the query arguments won't be handled.
@@ -132,7 +134,7 @@ All entries are combined with `AND` operator. To use `OR` call it passing a `Str
 select.where("one = 1 OR one = 2","two = 3 OR two = 4");
 // same as
 select.where("one = 1 OR one = 2").where("two = 3 OR two = 4");
-// produes WHERE (one = 1 OR one = 2) AND (two = 3 OR two = 4)
+// produces WHERE (one = 1 OR one = 2) AND (two = 3 OR two = 4)
 ```
 
 ### .group
@@ -145,7 +147,7 @@ select.group("one, two")
 select.group("one","two")
 // same as
 select.group("one").group("two")
-// produes GROUP BY one, two
+// produces GROUP BY one, two
 ```
 
 ### .order
@@ -158,7 +160,7 @@ select.order("one, two DESC")
 select.order("one","two DESC")
 // same as
 select.group("one").group("two DESC")
-// produes ORDER BY one, two DESC
+// produces ORDER BY one, two DESC
 ```
 
 ### .limit
@@ -171,7 +173,7 @@ select.limit("10, 20")
 select.limit(10,20)
 // same as
 select.limit(10).limit(20)
-// produes LIMIT 10, 20
+// produces LIMIT 10, 20
 ```
 
 ### Joins
@@ -209,7 +211,7 @@ Operations can be combined having each entry representing a join operation.
 select
   .fields({ "a.id": "a", "b.id": "b","c.id": "c","d.id": "d","e.id": "e" })
   .from("a")
-  .join({ "b": "b.id = a.bid", c: "c.id = a.cid" })
+  .join({ "b": "b.id = a.bid", "c": "c.id = a.cid" })
   .leftJoin({ "d": "d.id = a.did" })
   .leftOuterJoin({ "e": "e.id = a.eid" })
 // produces:
@@ -239,7 +241,7 @@ Defines the `INTO` clause.
 
 ```js
 insert.into("table")
-// produes INSERT INTO table
+// produces INSERT INTO table
 ```
 
 ### .fields
@@ -254,7 +256,7 @@ insert.into("table").fields("one","two","three")
 insert.into("table").fields("one").fields("two").fields("three")
 // same as
 insert.into("table").fields(["one","two","three"])
-// produes INSERT INTO table (one, two, three)
+// produces INSERT INTO table (one, two, three)
 ```
 
 ### .values
@@ -267,14 +269,14 @@ insert.values(1,2,3)
 insert.values([1,2,3])
 //same as
 insert.values(1,[2,3])
-// produes VALUES (?, ?, ?)
+// produces VALUES (?, ?, ?)
 ```
 
 To insert multiple records call `.values` as many times as needed.
 
 ```js
 insert.values(1,2,3).values(1,2,3).values(1,2,3)
-// produes VALUES (?, ?, ?), (?, ?, ?), (?, ?, ?)
+// produces VALUES (?, ?, ?), (?, ?, ?), (?, ?, ?)
 ```
 
 ## Update
@@ -295,7 +297,7 @@ Defines the table to be updated.
 
 ```js
 update.table("table")
-// wil produce UPDATE table
+// produces UPDATE table
 ```
 
 ### .set
@@ -308,7 +310,7 @@ update.set({ one: 1, two: 2 })
 update.set({ one: 1 },{ two: 2 })
 // same as
 update.set({ one: 1 }).set({ two: 2 })
-// wil produce SET one = ?, two = ?
+// produces SET one = ?, two = ?
 ```
 
 ### .where
@@ -337,13 +339,18 @@ var delete = new sql.cls.Delete();
 Defines the `FROM` clause.
 
 ```js
-delete.from("table);
-// produes DELETE FROM table
+delete.from("table");
+// produces DELETE FROM table
 ```
 
 ### .where
 
 Works exactly the same as in Select statement. Please refer to its documentation.
+
+```js
+delete.from("table").where({ one: 1 });
+// produces DELETE FROM table WHERE one = ?
+```
 
 ### Joins
 
@@ -400,7 +407,8 @@ It accepts a `sql.cls.Select` instance. In this case the select query is built b
 
 ```js
 var select = sql.select().from("table").where({ one: 1, two: "'value'" });
-create.view("viewname").as( select );
+
+create.view("viewname").as(select);
 // produces CREATE VIEW viewname AS SELECT * from table WHERE (one = 1 AND two = 'value')
 ```
 
@@ -442,6 +450,7 @@ It accepts a `sql.cls.Query` instance at `.do` method. In this case the statemen
 
 ```js
 var insert = sql.insert().into("del").fields("id").values("old.id");
+
 create.trigger("trgname").delete("tbl").do(insert);
 // produces CREATE TRIGGER trgname DELETE ON tbl BEGIN INSERT INTO del (id) VALUES (old.id); END;
 ```
@@ -450,6 +459,7 @@ You can call `.do` as many times as needed. Don't mind the `;`, it will be inclu
 
 ```js
 var insert = sql.insert().into("del").fields("id").values("old.id");
+
 create.trigger("trgname").delete("tbl").do(insert).do(insert,insert);
 // produces a big query which is covered by unit tests
 ```
@@ -464,7 +474,7 @@ create.table("tablename").exists(false);
 // produces CREATE TABLE IF NOT EXISTS tablename
 ```
 
-This obviously doesn't make sense. It's just to keep consistency with the `DROP` statement.
+The following obviously doesn't make sense. It's just to keep consistency with the `DROP` statement.
 
 ```js
 create.table("tablename").exists(true);
@@ -481,8 +491,8 @@ create.temp().table("temptable").fields("a TEXT");
 ```
 
 ```js
-create.temp().view("temptable").as("SELECT * FROM table WHERE one = 1");
-// produces CREATE TEMPORARY VIEW viewname AS SELECT * from table WHERE (one = 1 AND two = 'value')
+create.temp().view("viewname").as("SELECT * FROM table WHERE one = 1");
+// produces CREATE TEMPORARY VIEW viewname AS SELECT * from table WHERE (one = 1)
 ```
 
 ### .unique
@@ -522,7 +532,7 @@ Includes the `RENAME TO` clause.
 
 ```js
 alter.table("tablename").renamte("newname");
-// produces ALTER TABLE tablename RENAME TO new name
+// produces ALTER TABLE tablename RENAME TO newname
 ```
 
 ### .add
@@ -584,7 +594,7 @@ Use the statement to drop an index.
 
 ```js
 drop.index("indexname")
-// produes DROP INDEX indexname
+// produces DROP INDEX indexname
 ```
 
 ### .view
@@ -593,7 +603,7 @@ Use the statement to drop a view.
 
 ```js
 drop.view("viewname")
-// produes DROP VIEW viewname
+// produces DROP VIEW viewname
 ```
 
 ### .trigger
@@ -602,7 +612,7 @@ Use the statement to drop a trigger.
 
 ```js
 drop.trigger("triggername")
-// produes DROP TRIGGER triggername
+// produces DROP TRIGGER triggername
 ```
 
 ### .exists
@@ -614,7 +624,7 @@ drop.table("tablename").exists(true);
 // produces DROP TABLE IF EXISTS tablename
 ```
 
-This obviously doesn't make sense. It's just to keep consistency with the `CREATE` statement.
+The following obviously doesn't make sense. It's just to keep consistency with the `CREATE` statement.
 
 ```js
 drop.table("tablename").exists(false);
