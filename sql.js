@@ -1,8 +1,14 @@
+/*!
+**  bauer-sql -- Just another SQL building tool.
+**  Copyright (c) 2014 Yuri Neves Silveira <http://yneves.com>
+**  Licensed under The MIT License <http://opensource.org/licenses/MIT>
+**  Distributed on <http://github.com/yneves/node-bauer-sql>
+*/
 // - -------------------------------------------------------------------- - //
 // - libs
 
 var lib = {
-	factory: require("yns-factory"),
+	factory: require("bauer-factory"),
 	query: require("./lib/query.js"),
 	schema: require("./lib/schema.js"),
 	parser: require("./lib/parser.js"),
