@@ -2,7 +2,7 @@
 
 Parses SQL statements.
 
-NOTE: this is not the greatest SQL parser since it does not solve the semicolon-inside-quotes problem. 
+NOTE: this is not the greatest SQL parser since it does not solve the semicolon-inside-quotes problem.
 
 ### Constructor
 
@@ -42,14 +42,6 @@ assert.deepEqual(create,{
   fields: [
     "name"
   ],
-});
-```
-
-```js
-var create = parser.parseCreate("CREATE VIEW IF NOT EXISTS viewname AS SELECT tasks.*, versions.name as version, projects.name as project, count(tasklabels.id) as labels FROM tasks LEFT JOIN tasklabels ON tasklabels.tid = tasks.id LEFT JOIN versions ON versions.id = tasks.vid LEFT JOIN projects ON projects.id = tasks.pid GROUP BY tasks.id");
-assert.deepEqual(create,{
-  view: "viewname",
-  as: "SELECT ....",
 });
 ```
 
