@@ -2,6 +2,8 @@
 
 Parses SQL statements.
 
+NOTE: this is not the greatest SQL parser since it does not solve the semicolon-inside-quotes problem. 
+
 ### Constructor
 
 ```js
