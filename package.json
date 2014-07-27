@@ -1,7 +1,7 @@
 {
   "name": "bauer-sql",
   "version": "1.0.3",
-  "description": "Just another SQL building tool",
+  "description": "Just another SQL building tool.",
   "keywords": ["sql","query","insert","delete","update","create","alter","drop","table","index","trigger","statement"],
   "license": "MIT",
   "homepage": "https://github.com/yneves/node-bauer-sql",

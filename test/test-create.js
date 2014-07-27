@@ -1,9 +1,3 @@
-/*!
-**  bauer-sql -- Just another SQL building tool.
-**  Copyright (c) 2014 Yuri Neves Silveira <http://yneves.com>
-**  Licensed under The MIT License <http://opensource.org/licenses/MIT>
-**  Distributed on <http://github.com/yneves/node-bauer-sql>
-*/
 // - -------------------------------------------------------------------- - //
 // - libs
 
@@ -23,6 +17,33 @@ describe("Create",function() {
 		var query = create.table("tablename").fields({ id: "INTEGER PRIMARY KEY", name: "TEXT", email: "TEXT" }).toQuery();
 		assert.deepEqual(query,{
 			text: "CREATE TABLE tablename (id INTEGER PRIMARY KEY, name TEXT, email TEXT)",
+			args: [],
+		});
+	});
+
+	it("table-pk",function() {
+		var create = new lib.sql.cls.Create();
+		var query = create.table("tablename").fields({ one: "INTEGER", two: "INTEGER", three: "TEXT" }).primaryKey("one, two").toQuery();
+		assert.deepEqual(query,{
+			text: "CREATE TABLE tablename (one INTEGER, two INTEGER, three TEXT, PRIMARY KEY (one, two))",
+			args: [],
+		});
+	});
+
+	it("table-fk",function() {
+		var create = new lib.sql.cls.Create();
+		var query = create.table("tablename").fields({ id: "INTEGER PRIMARY KEY", name: "TEXT", email: "TEXT" }).foreignKey({ "name": "othertable.name" }).toQuery();
+		assert.deepEqual(query,{
+			text: "CREATE TABLE tablename (id INTEGER PRIMARY KEY, name TEXT, email TEXT, FOREIGN KEY (name) REFERENCES othertable (name))",
+			args: [],
+		});
+	});
+
+	it("table-keys",function() {
+		var create = new lib.sql.cls.Create();
+		var query = create.table("tablename").fields({ id: "INTEGER", name: "TEXT", email: "TEXT" }).primaryKey("id").foreignKey({ "name": "othertable.name" }).toQuery();
+		assert.deepEqual(query,{
+			text: "CREATE TABLE tablename (id INTEGER, name TEXT, email TEXT, PRIMARY KEY (id), FOREIGN KEY (name) REFERENCES othertable (name))",
 			args: [],
 		});
 	});
