@@ -26,6 +26,7 @@ describe("SQL",function() {
 		var select = new lib.sql.cls.Select();
 		var query = select.from("tablename").where({ field: "value", otherfield: { gt: 0 }, list: ["a","b","c"] }).toQuery();
 		assert.deepEqual(query,{
+			type: "select",
 			text: "SELECT * FROM tablename WHERE (field = ? AND otherfield > ? AND list IN (?, ?, ?))",
 			args: ["value",0,"a","b","c"],
 		});

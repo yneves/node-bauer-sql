@@ -16,6 +16,7 @@ describe("Drop",function() {
 		var drop = new lib.sql.cls.Drop();
 		var query = drop.table("tablename").toQuery();
 		assert.deepEqual(query,{
+			type: "drop",
 			text: "DROP TABLE tablename",
 			args: [],
 		});
@@ -25,6 +26,7 @@ describe("Drop",function() {
 		var drop = new lib.sql.cls.Drop();
 		var query = drop.table("tablename").exists(true).toQuery();
 		assert.deepEqual(query,{
+			type: "drop",
 			text: "DROP TABLE IF EXISTS tablename",
 			args: [],
 		});
@@ -34,6 +36,7 @@ describe("Drop",function() {
 		var drop = new lib.sql.cls.Drop();
 		var query = drop.index("indexname").toQuery();
 		assert.deepEqual(query,{
+			type: "drop",
 			text: "DROP INDEX indexname",
 			args: [],
 		});
@@ -43,6 +46,7 @@ describe("Drop",function() {
 		var drop = new lib.sql.cls.Drop();
 		var query = drop.trigger("triggername").toQuery();
 		assert.deepEqual(query,{
+			type: "drop",
 			text: "DROP TRIGGER triggername",
 			args: [],
 		});
@@ -52,6 +56,7 @@ describe("Drop",function() {
 		var drop = new lib.sql.cls.Drop();
 		var query = drop.view("viewname").toQuery();
 		assert.deepEqual(query,{
+			type: "drop",
 			text: "DROP VIEW viewname",
 			args: [],
 		});

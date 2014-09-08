@@ -1,6 +1,6 @@
 {
   "name": "bauer-sql",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Just another SQL building tool.",
   "keywords": ["sql","query","insert","delete","update","create","alter","drop","table","index","trigger","statement"],
   "license": "MIT",
@@ -21,7 +21,7 @@
     "mocha": ">=1.0.0"
   },
   "dependencies": {
-    "bauer-factory": ">=1.0.0"
+    "bauer-factory": ">=1.1.0"
   },
-  "main": "sql.js"	
+  "main": "sql.js"
 }

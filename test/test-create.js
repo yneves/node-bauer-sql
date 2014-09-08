@@ -16,6 +16,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.table("tablename").fields({ id: "INTEGER PRIMARY KEY", name: "TEXT", email: "TEXT" }).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TABLE tablename (id INTEGER PRIMARY KEY, name TEXT, email TEXT)",
 			args: [],
 		});
@@ -25,6 +26,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.table("tablename").fields({ one: "INTEGER", two: "INTEGER", three: "TEXT" }).primaryKey("one, two").toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TABLE tablename (one INTEGER, two INTEGER, three TEXT, PRIMARY KEY (one, two))",
 			args: [],
 		});
@@ -34,6 +36,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.table("tablename").fields({ id: "INTEGER PRIMARY KEY", name: "TEXT", email: "TEXT" }).foreignKey({ "name": "othertable.name" }).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TABLE tablename (id INTEGER PRIMARY KEY, name TEXT, email TEXT, FOREIGN KEY (name) REFERENCES othertable (name))",
 			args: [],
 		});
@@ -43,6 +46,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.table("tablename").fields({ id: "INTEGER", name: "TEXT", email: "TEXT" }).primaryKey("id").foreignKey({ "name": "othertable.name" }).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TABLE tablename (id INTEGER, name TEXT, email TEXT, PRIMARY KEY (id), FOREIGN KEY (name) REFERENCES othertable (name))",
 			args: [],
 		});
@@ -52,6 +56,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.table("tablename").exists(false).fields({ id: "INTEGER PRIMARY KEY", name: "TEXT", email: "TEXT" }).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TABLE IF NOT EXISTS tablename (id INTEGER PRIMARY KEY, name TEXT, email TEXT)",
 			args: [],
 		});
@@ -61,6 +66,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.index("indexname").on("tablename").fields("name", "email").toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE INDEX indexname ON tablename (name, email)",
 			args: [],
 		});
@@ -70,6 +76,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.unique().index("indexname").on("tablename").fields("name", "email").toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE UNIQUE INDEX indexname ON tablename (name, email)",
 			args: [],
 		});
@@ -81,6 +88,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.trigger("triggername").delete().on("tablename").do(insert).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TRIGGER triggername DELETE ON tablename BEGIN INSERT INTO tablename (name, email) VALUES (old.name, new.email); END",
 			args: [],
 		});
@@ -92,6 +100,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.trigger("triggername").update().of("name").on("tablename").do(insert).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TRIGGER triggername UPDATE OF name ON tablename BEGIN INSERT INTO tablename (name, email) VALUES (old.name, new.email); END",
 			args: [],
 		});
@@ -103,6 +112,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.trigger("triggername").update("tablename").do(insert).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TRIGGER triggername UPDATE ON tablename BEGIN INSERT INTO tablename (name, email) VALUES (old.name, new.email); END",
 			args: [],
 		});
@@ -114,6 +124,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.trigger("triggername").update("tablename.name").do(insert).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TRIGGER triggername UPDATE OF name ON tablename BEGIN INSERT INTO tablename (name, email) VALUES (old.name, new.email); END",
 			args: [],
 		});
@@ -125,6 +136,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.trigger("triggername").update("tablename.name").do(insert).do(insert).do(insert).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TRIGGER triggername UPDATE OF name ON tablename BEGIN INSERT INTO tablename (name, email) VALUES (old.name, new.email); INSERT INTO tablename (name, email) VALUES (old.name, new.email); INSERT INTO tablename (name, email) VALUES (old.name, new.email); END",
 			args: [],
 		});
@@ -134,6 +146,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.view("viewname").as("SELECT one, two FROM tablename WHERE one = ?").toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE VIEW viewname AS SELECT one, two FROM tablename WHERE one = ?",
 			args: [],
 		});
@@ -143,6 +156,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.temp().view("viewname").as("SELECT one, two FROM tablename WHERE one = 1").toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE TEMPORARY VIEW viewname AS SELECT one, two FROM tablename WHERE one = 1",
 			args: [],
 		});
@@ -154,6 +168,7 @@ describe("Create",function() {
 		var create = new lib.sql.cls.Create();
 		var query = create.view("viewname").exists(false).as(select).toQuery();
 		assert.deepEqual(query,{
+			type: "create",
 			text: "CREATE VIEW IF NOT EXISTS viewname AS SELECT one, two FROM tablename WHERE (one = 1)",
 			args: [],
 		});
